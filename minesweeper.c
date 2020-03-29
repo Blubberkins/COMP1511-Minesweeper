@@ -223,9 +223,11 @@ void initialise_gameMinefield(int gameMinefield[SIZE + 3][SIZE + 3]) {
     // The purpose of this is to accomodate changes to the SIZE constant,
     // as hardcoding the non-minefield elements would not work for a
     // different sized minefield.
+    // This will allow the display to remain functional for SIZEs up to 99. 
     
     // A key is included below (and is included in the print function too):
     // Values of 0 to 7 will be printed as "00, 01, 02... 07"
+    // Values of 10 to 99 will be printed as normal.
     // A value of 100 will be printed as "  " (two spaces)
     // A value of 101 will be printed as " " (one space)
     // A value of 102 will be printed as "---"
@@ -248,6 +250,7 @@ void initialise_gameMinefield(int gameMinefield[SIZE + 3][SIZE + 3]) {
                     gameMinefield[row][col] = 101;
                 } else {
                     // Values of 0 to 7 will be printed as "00, 01, 02... 07"
+                    // and values of 10 to 99 will be printed as normal.
                     gameMinefield[row][col] = col - 2;
                 }
                     
@@ -589,6 +592,7 @@ void print_game_minefield(int gameMinefield[SIZE + 3][SIZE + 3],
 
     // Key for printing non-minefield elements:
     // Values of 0 to 9 will be printed as "00, 01, 02... 09"
+    // Values of 10 to 99 will be printed as normal.
     // A value of 100 will be printed as "  " (two spaces)
     // A value of 101 will be printed as " " (one space)
     // A value of 102 will be printed as "---"
@@ -611,7 +615,23 @@ void print_game_minefield(int gameMinefield[SIZE + 3][SIZE + 3],
             if (gameMinefield[row][col] >= 0 &&
                 gameMinefield[row][col] <= 9) {
                 // Values of 0 to 9 will be printed as "00, 01, 02... 09"
-                printf("0%d ", gameMinefield[row][col]);
+                if (col == SIZE + 1) {
+                    // This is done to format the minefield properly.
+                    printf("0%d", gameMinefield[row][col]);
+                } else {
+                    printf("0%d ", gameMinefield[row][col]);
+                }
+
+            } else if (gameMinefield[row][col] >= 10 &&
+                       gameMinefield[row][col] <= 99) {
+                // Values of 10 to 99 will be printed as normal.
+                if (col == SIZE + 1) {
+                    // This is done to format the minefield properly.
+                    printf("%d", gameMinefield[row][col]);
+                } else {
+                    printf("%d ", gameMinefield[row][col]);
+                }
+                
             } else if (gameMinefield[row][col] == 110) {
                 // Values of 110 (HIDDEN_SAFE) will be printed as "## "
                 if (col == SIZE + 1) {
@@ -634,7 +654,13 @@ void print_game_minefield(int gameMinefield[SIZE + 3][SIZE + 3],
                     }
                     
                 } else if (gameLost == 1) {
-                    printf("() ");
+                    if (col == SIZE + 1) {
+                        // This is done to format the minefield properly.
+                        printf("()");
+                    } else {
+                        printf("() ");
+                    }
+                    
                 }
             } else if (gameMinefield[row][col] == 100) {
                 // A value of 100 will be printed as "  " (two spaces)
